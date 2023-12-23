@@ -1,0 +1,83 @@
+### HIGHER LOWER GAME ###
+# Importing modules for the game.
+from art import logo, vs
+from game_data import data
+from replit import clear
+import random
+
+## Step 1: Search A and Search B are randomly selected from the data list found in game_data.py. If the user guesses correctly, the correct search remains for the next round and a new random search from the data list is selected.
+          
+          # search_A = random.choice(data)
+          # search_B = random.choice(data)
+
+
+search_constant = {}
+score = 0
+game_over = False
+
+## Step 2: The game begins with the higher lower logo. Search A populates, the vs logo appears, and then the Search B populates. The user then guesses whether A or B has more followers and inputs their answer.
+
+def play_game():
+  global search_constant
+  global score
+  global game_over
+  search_A = random.choice(data)
+  search_B = random.choice(data)
+  print(logo)
+  print(f"Compare A: {search_A['name']}, a {search_A['description']}, from {search_A['country']}.")
+  print(vs)
+  print(f"Against B: {search_B['name']}, a {search_B['description']}, from {search_B['country']}.")
+  player_choice = input("Who has more followers? Type 'A' or 'B': ").upper()
+  if player_choice == "A":
+    if search_A['follower_count'] > search_B['follower_count']:
+      search_constant = search_A
+      score += 1
+    else:
+      end_game()
+  if player_choice == "B":
+    if search_B['follower_count'] > search_A['follower_count']:
+      search_constant = search_B
+      score += 1
+    else:
+      end_game()
+    ## Step 3: The code needs to check if the answer the player chose is correct. To do that, the number of followers in Search A and B must be compared. If the answer is correct, the next round begins and a new search is selected. 
+  while not game_over:
+    clear()
+    continue_playing()
+        
+
+## Step 4: If the user guesses correctly, the score is updated, a new search is randomly selected, and the user continues playing.
+def continue_playing():
+  global score
+  global search_constant
+  new_search = random.choice(data)
+  if search_constant == new_search:
+    new_search = random.choice(data)
+  print(logo)
+  print(f"You're right! Current score: {score}.")
+  print(f"Compare A: {search_constant['name']}, a {search_constant['description']}, from {search_constant['country']}.")
+  print(vs)
+  print(f"Against B: {new_search['name']}, a {new_search['description']}, from {new_search['country']}.")
+  player_choice = input("Who has more followers? Type 'A' or 'B': ").upper()
+  if player_choice == "A":
+    if search_constant['follower_count'] > new_search['follower_count']:
+      score += 1
+    else:
+      end_game()
+  if player_choice == "B":
+    if new_search['follower_count'] > search_constant['follower_count']:
+      search_constant = new_search
+      score += 1
+    else:
+      end_game()
+
+## Step 5: If the answer is incorrect, the game is over.
+def end_game():
+  global game_over
+  game_over = True
+  clear()
+  print(logo)
+  print(f"Sorry, that's wrong. Final score: {score}.")
+
+## Step 6: Call the play_game function to begin the game.
+play_game()
